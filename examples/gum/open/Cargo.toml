@@ -2,7 +2,7 @@
 name = "open"
 version = "0.1.0"
 authors = ["Keegan Saunders <keegan@undefinedbehaviour.org>"]
-edition = "2018"
+edition = "2021"
 license = "wxWindows"
 publish = false
 

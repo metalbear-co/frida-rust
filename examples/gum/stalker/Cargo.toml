@@ -2,7 +2,7 @@
 name = "stalker"
 version = "0.1.0"
 authors = ["meme <meme@users.noreply.github.com>"]
-edition = "2018"
+edition = "2021"
 license = "wxWindows"
 publish = false
 
