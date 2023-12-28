@@ -13,6 +13,10 @@ pub enum Error {
     #[error("Failed to attach")]
     DeviceAttachError,
 
+    /// Failled to lookup a device.
+    #[error("Failed to lookup device")]
+    DeviceLookupFailed,
+
     /// Failed to detach a session.
     #[error("Failed to detach the current session")]
     SessionDetachError,
@@ -36,6 +40,42 @@ pub enum Error {
     /// Failed to inject library
     #[error("Failed to inject library ({code}) {message}")]
     InjectFailed {
+        /// Error code
+        code: i32,
+        /// Error message
+        message: String,
+    },
+
+    /// Failed to query device parameters
+    #[error("Failed to query device system parameters ({code}) {message}")]
+    DeviceQuerySystemParametersFailed {
+        /// Error code
+        code: i32,
+        /// Error message
+        message: String,
+    },
+
+    /// Failed to spawn program
+    #[error("Failed to spawn program ({code}) {message}")]
+    SpawnFailed {
+        /// Error code
+        code: i32,
+        /// Error message
+        message: String,
+    },
+
+    /// Failed to resume
+    #[error("Failed to resume ({code}) {message}")]
+    ResumeFailed {
+        /// Error code
+        code: i32,
+        /// Error message
+        message: String,
+    },
+
+    /// Failed to kill
+    #[error("Failed to kill PID ({code}) {message}")]
+    KillFailed {
         /// Error code
         code: i32,
         /// Error message

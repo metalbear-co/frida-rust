@@ -13,7 +13,9 @@ members = [
     "examples/gum/debug_symbol",
     "examples/gum/fast_interceptor",
     "examples/gum/linux_no_std",
+    "examples/gum/memory_access_monitor",
     "examples/core/hello",
+    "examples/core/usb_device",
     "examples/core/console_log",
 ]
 # We miss our linux_no_std example from the default members since `cargo check`
@@ -30,6 +32,8 @@ default-members = [
     "examples/gum/hook_instruction",
     "examples/gum/debug_symbol",
     "examples/gum/fast_interceptor",
+    "examples/gum/memory_access_monitor",
     "examples/core/hello",
+    "examples/core/usb_device",
     "examples/core/console_log",
 ]

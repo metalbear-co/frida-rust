@@ -45,7 +45,14 @@
 //! }
 //! ```
 
-#![cfg_attr(not(feature = "module-names"), no_std)]
+#![cfg_attr(
+    not(any(
+        feature = "module-names",
+        feature = "backtrace",
+        feature = "memory-access-monitor"
+    )),
+    no_std
+)]
 #![cfg_attr(doc_cfg, feature(doc_cfg))]
 #![deny(warnings)]
 #![allow(clippy::needless_doctest_main)]
@@ -62,6 +69,7 @@ extern crate num_derive;
 use core::{
     convert::TryFrom,
     ffi::{c_char, c_void, CStr},
+    fmt::{Debug, Display, Formatter, LowerHex, UpperHex},
 };
 
 #[cfg(not(feature = "module-names"))]
@@ -85,6 +93,11 @@ pub use error::Error;
 mod cpu_context;
 pub use cpu_context::*;
 
+#[cfg(feature = "memory-access-monitor")]
+mod memory_access_monitor;
+#[cfg(feature = "memory-access-monitor")]
+pub use memory_access_monitor::*;
+
 mod memory_range;
 pub use memory_range::*;
 
@@ -94,10 +107,10 @@ pub use range_details::*;
 mod debug_symbol;
 pub use debug_symbol::*;
 
-#[cfg(all(feature = "backtrace", not(target_os = "windows")))]
+#[cfg(feature = "backtrace")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "backtrace")))]
 mod backtracer;
-#[cfg(all(feature = "backtrace", not(target_os = "windows")))]
+#[cfg(feature = "backtrace")]
 #[cfg_attr(doc_cfg, doc(cfg(feature = "backtrace")))]
 pub use backtracer::*;
 
@@ -123,7 +136,7 @@ impl Drop for Gum {
     }
 }
 
-#[derive(Copy, Clone, Hash, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 #[repr(transparent)]
 pub struct NativePointer(pub *mut c_void);
 
@@ -166,5 +179,23 @@ impl TryFrom<NativePointer> for String {
 impl AsRef<NativePointer> for NativePointer {
     fn as_ref(&self) -> &NativePointer {
         self
+    }
+}
+
+impl LowerHex for NativePointer {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        LowerHex::fmt(&(self.0 as usize), f)
+    }
+}
+
+impl UpperHex for NativePointer {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        UpperHex::fmt(&(self.0 as usize), f)
+    }
+}
+
+impl Display for NativePointer {
+    fn fmt(&self, f: &mut Formatter<'_>) -> core::fmt::Result {
+        Display::fmt(&(self.0 as usize), f)
     }
 }
